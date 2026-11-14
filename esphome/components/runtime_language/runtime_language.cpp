@@ -39,20 +39,9 @@ static std::vector<Binding, RAMAllocator<Binding>> &bindings() {
   return list;
 }
 
-static void unbind_label(void *, void *label, void *) {
-  auto &list = bindings();
-  list.erase(std::remove_if(list.begin(), list.end(), [label](const Binding &b) { return b.label == label; }), list.end());
-}
+void bind_label(lv_obj_t *label, uint16_t key) { bindings().push_back(Binding{label, key, false}); }
 
-void bind_label(lv_obj_t *label, uint16_t key) {
-  bindings().push_back(Binding{label, key, false});
-  note_registration(unbind_label, nullptr, label, nullptr);
-}
-
-void bind_label_copy(lv_obj_t *label, uint16_t key) {
-  bindings().push_back(Binding{label, key, true});
-  note_registration(unbind_label, nullptr, label, nullptr);
-}
+void bind_label_copy(lv_obj_t *label, uint16_t key) { bindings().push_back(Binding{label, key, true}); }
 
 static bool shows(const char *now, const char *text) {
   const size_t n = strlen(now);

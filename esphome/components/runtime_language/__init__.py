@@ -75,10 +75,6 @@ def register_text(text: str) -> int | None:
 
 
 def key_expression(key: int):
-    from esphome.components.package_manager.build import package_pass
-
-    if package_pass():
-        return cg.MockObj(str(runtime_language_ns.global_runtime_language), "->").english(key)
     return cg.MockObj(KEYS_SYMBOL)[key]
 
 
